@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+      body {
+        width: 800px;
+        height: auto;
+      }
+      h1 {
+        text-align: center;
+      }
+      .attr,
+      .attrName {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        width: 300px;
+      }
+      .attrName {
+        width: 360px;
+      }
+      .btnBox span {
+        text-decoration: underline;
+      }
+      .attrName .btnBox span {
+        text-decoration: none;
+      }
+      .attrName .btnBox #RED,
+      .attrName .btnBox #GREEN,
+      .attrName .btnBox #BLUE {
+        text-decoration: underline;
+      }
+    </style>
+    <title>Page Title</title>
+  </head>
+  <body bgcolor="lightcyan">
+    <h1>임베디드 액츄레이터 제어</h1>
+    <div id="controlBox">
+      <div class="attr">
+        <div class="name">LED1</div>
+        <div class="btnBox">
+          <span class="1" id="LED1">On</span>
+          <span class="0" id="LED1">Off</span>
+        </div>
+      </div>
+      <div class="attr">
+        <div class="name">Buzzer</div>
+        <div class="btnBox">
+          <span class="1" id="BUZZER">On</span>
+          <span class="0" id="BUZZER">Off</span>
+        </div>
+      </div>
+      <div class="attrName">
+        <div class="name">LED3</div>
+        <div class="btnBox">
+          <span
+            >On(
+            <span class="1" id="RED">R</span>
+            <span class="1" id="GREEN">G</span>
+            <span class="1" id="BLUE">B</span>
+            )</span
+          >
+          <span
+            >Off(
+            <span class="0" id="RED">R</span>
+            <span class="0" id="GREEN">G</span>
+            <span class="0" id="BLUE">B</span>
+            )</span
+          >
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    window.onload = function() {
+      var socket = io.connect();
+      var off = document.getElementsByClassName("0");
+      Array.prototype.map.call(off, function(testElement) {
+        testElement.onclick = function(ev) {
+          socket.emit("off", ev.currentTarget.id);
+        };
+      });
+      var on = document.getElementsByClassName("1");
+      Array.prototype.map.call(on, function(testElement) {
+        testElement.onclick = function(ev) {
+          socket.emit("on", ev.currentTarget.id);
+        };
+      });
+    };
+  </script>
+</html>
+

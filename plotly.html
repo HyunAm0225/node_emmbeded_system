@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src = "/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+    window.onload = function(){
+        var dataview = document.getElementById("dataview");
+        var socket = io.connect();
+        // var html = "";
+
+        socket.on('watch',function(sonicdata){  // 초음파데이터 실시간수신
+            Plotly.extendTraces('chart',{y:[[sonicdata]]},[0]); //차트에 그리기
+            widthcount++;   // 그래프데이터 카운트
+            if(widthcount>100){ // 100이상부터 차트 동적이동
+                Plotly.relayout('chart',{
+                    xaxis:{
+                        range:[widthcount-99,widthcount]    // x축 동적이동
+                    }
+                });
+            }
+        });
+        document.getElementById('start').onclick = function(){
+            var text = document.getElementById('text').value;
+            socket.emit('startmsg',text);
+        };
+        document.getElementById('stop').onclick = function(){
+            var text = document.getElementById('text').value;
+            socket.emit('stopmsg',text);
+        };
+    };    
+    </script>
+    <style>
+        *{
+            color:#6382ff;
+            font-weight: bold;
+
+        }
+    </style>
+
+    <title>초음파 센서 제어</title>
+</head>
+
+<body style="background-color: black;">
+    <div class="container">
+    <h2>거리측정제어(초음파센서제어)</h2>
+    <hr>
+    <h3>측정주기 설정 및 가동</h3>
+    <h5>측정주기 입력 범위: 500~1000(단위:ms) 입력 값으로 조정 가능</h5>
+    <hr>
+    <input type="text" id="text" value="800"/>ms
+    <input type="button" id="start" class="btn btn-outline-primary" value="초음파센서가동"/>
+    <input type="button" id="stop" class="btn btn-outline-danger" value="초음파센서중지"/>
+    <br><br><br>
+    <div id="chart" class="container bg-dark shadow mx-auto">
+        <script>
+        Plotly.plot('chart',[{
+            y:[0],  // 출력값 지정
+            type:'line',    // 선차트 지정
+            line:{shape:'spline'}   // 곡선형태 지정
+        }]);
+        </script>
+    </div>
+    <hr>
+    <!-- <p id="dataview">초음파센서가동시 이곳에 측정거리값이 출력됩니다.</p> -->
+</div>
+</body>
+</html>

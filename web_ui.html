@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+body {
+width: 800px;
+height: auto;
+      }
+      h1 {
+        text-align: center;
+      }
+      .attr {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        width: 300px;
+      }
+      .attrName {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        width: 360px;
+      }
+      .btnBox span {
+        text-decoration: underline;
+      }
+      .attrName .btnBox span {
+        text-decoration: none;
+      }
+      .attrName .btnBox #r,
+      .attrName .btnBox #g,
+      .attrName .btnBox #b {
+        text-decoration: underline;
+      }
+    </style>
+    <title>Page Title</title>
+  </head>
+
+  <body bgcolor="lightcyan">
+    <h1>임베디드 액츄레이터 제어</h1>
+    <div id="controlBox">
+      <div class="attr">
+        <div class="name">LED1</div>
+        <div class="btnBox">
+          <span id="1">On</span>
+          <span id="0">Off</span>
+        </div>
+      </div>
+      <div class="attr">
+        <div class="name">Buzzer</div>
+        <div class="btnBox">
+          <span id="1">On</span>
+          <span id="0">Off</span>
+        </div>
+      </div>
+      <div class="attrName">
+        <div class="name">LED3</div>
+        <div class="btnBox">
+          <span
+            >On(
+            <span class="1" id="r">R</span>
+            <span class="1" id="g">G</span>
+            <span class="1" id="b">B</span>
+            )</span
+          >
+          <span
+            >Off(
+            <span class="0" id="r">R</span>
+            <span class="0" id="g">G</span>
+            <span class="0" id="b">B</span>
+            )</span
+          >
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    window.onload = function() {
+      var socket = io.connect();
+      document.getElementById("0").onclick = function(ev) {
+        var target =
+          ev.currentTarget.parentElement.previousElementSibling.innerHTML;
+        console.log(target);
+        socket.emit(target, 0);
+      };
+      document.getElementById("1").onclick = function(ev) {
+        var target =
+          ev.currentTarget.parentElement.previousElementSibling.innerHTML;
+        console.log(target);
+        socket.emit(target, 1);
+      };
+      var offThreeLedColor = document.getElementsByClassName("0");
+      Array.prototype.map.call(offThreeLedColor, function(testElement) {
+        testElement.onclick = function(ev) {
+          console.log(ev.currentTarget);
+          socket.emit(ev.currentTarget.id, 0);
+        };
+      });
+      var onThreeLedColor = document.getElementsByClassName("1");
+      Array.prototype.map.call(onThreeLedColor, function(testElement) {
+        testElement.onclick = function(ev) {
+          console.log(ev.currentTarget);
+          socket.emit(ev.currentTarget.id, 1);
+        };
+      });
+    };
+  </script>
+</html>
+
+
