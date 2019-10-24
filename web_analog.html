@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>임베디드 시스템 제어</title>
+
+</head>
+<body bgcolor="lightcyan">
+    <h2>임베디드시스템제어</h2>
+    <hr>
+    <h3>센서측정제어</h3>
+    <hr>
+    <ul>
+        <li>
+            <a href="/1">사운드센서측정ON</a>
+        </li>
+        <li>
+            <a href="/0">사운드센서측정OFF</a>
+        </li>
+    </ul>
+    <h3>광센서측정제어</h3>
+    <hr>
+    <ul>
+        <li>
+            <a href="/3">광센서측정ON</a>
+        </li>
+        <li>
+            <a href="/2">광센서측정OFF</a>
+        </li>
+    </ul>
+    <hr>
+    <h3>기준값 설정</h3>
+    <h6>기준값 입력범위 : 0~4095(12비트) 입력값으로 조정가능</h6>
+    <hr>
+    <form name="soundon" method="POST">
+        <div class="input">
+            <span class="label">기준값</span>
+            <input type="text" name = "threshold">
+        </div>
+        <hr>
+        <div class="input">
+            <input type="submit" value="기준값 설정">
+        </div>
+    </form>
+</body>
+</html>
